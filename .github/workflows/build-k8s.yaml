@@ -6,12 +6,12 @@ on:
 
 env:
   CONTAINER_REGISTRY: bctstexampleacr01.azurecr.io
-  NAMESPACE: bc-tst-example_project
-  PROJECT_NAME: example_project
+  NAMESPACE: bc-tst-example-project
+  PROJECT_NAME: example-project
   AKS_CLUSTER: bc-tst-example-aks01
   RESOURCE_GROUP: bc-tst-example-rg01
-  DEPLOYMENT_NAME: example_project-deployment
-  SECRET_NAME: example_project-prod-env
+  DEPLOYMENT_NAME: example-project-deployment
+  SECRET_NAME: example-project-prod-env
 
 
 jobs:

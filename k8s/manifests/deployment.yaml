@@ -16,11 +16,11 @@ spec:
     spec:
       containers:
         - name: example-website
-          image: bctstexampleacr01.azurecr.io/example_project:latest
+          image: bctstexampleacr01.azurecr.io/example-project:latest
           imagePullPolicy: Always
           envFrom:
             - secretRef:
-                name: example_project-prod-env
+                name: example-project-prod-env
           env:
             - name: PORT
               value: "8001"
