@@ -100,6 +100,6 @@ jobs:
       - name: Migrate Database
         run: |
           kubectl config set-context --current --namespace=$NAMESPACE
-          export SINGLE_POD_NAME=$(kubectl get pod -l app=$DEPLOYMENT_NAME -o jsonpath="{.items[0].metadata.name}")
+          export SINGLE_POD_NAME=$(kubectl get pod -l app=example-project-deployment -o jsonpath="{.items[0].metadata.name}")
           echo $SINGLE_POD_NAME
           kubectl exec -i $SINGLE_POD_NAME -- bash /app/migrate.sh
