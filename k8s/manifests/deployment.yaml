@@ -16,16 +16,16 @@ spec:
     spec:
       containers:
         - name: example-website
-          image: example.azurecr.io/example:latest
+          image: bctstexampleacr01.azurecr.io/example_project:latest
           imagePullPolicy: Always
           envFrom:
             - secretRef:
-                name: example-web-prod-env
+                name: example_project-prod-env
           env:
             - name: PORT
               value: "8001"
           ports:
-            - containerPort: 8001
+            - containerPort: 8000
 
 ---
 
@@ -39,6 +39,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 8001
+      targetPort: 8000
   selector:
     app: example-website-deployment
