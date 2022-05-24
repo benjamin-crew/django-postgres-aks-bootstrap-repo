@@ -1,9 +1,7 @@
 # My ignores
 .venv
-example_web/.env
-example_web/.env.prod
-web/.env
-web/.env.prod
+.env
+.env.prod
 *.code-workspace
 .terraform
 .terraform.lock.hcl
@@ -116,7 +114,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
