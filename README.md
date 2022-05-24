@@ -1,6 +1,9 @@
 # django-postgres-aks-bootstrap-repo
+
 This is a bootstrap repo for a Django project with a managed Postgres backend, hosted in Azure Kubernetes Service.
-### Django
+
+## Django
+
 - Fork the repo
 - Create and activate your venv
 ```bash
@@ -17,7 +20,7 @@ pip install -r requirements.txt
 ```bash
 django-admin startproject <projectname> .
 ```
-- Create a .env.prod file that we can create a k8s secret from later on. Please note that there are a few values here that align with terraform variables, so make sure to take care to set them the same as you set them in terraform. Also be sure to change the default passwords and secret_keys etc. Theses are just a guide:
+- Create a .env.prod file that we can create a k8s secret from later on. Please note that there are a few values here that align with terraform variables, so make sure to take care to set them the same as you set them in terraform. Also be sure to change the default passwords and secret_keys etc. These are just a guide:
 ```bash
 DEBUG=0
 DJANGO_SUPERUSER_USERNAME=admin
@@ -102,7 +105,7 @@ if DB_IS_AVAILABLE:
 ```
 - Make sure the version of python used in the Dockerfile is the same one you used for your Django project.
 
-### Terraform
+## Terraform
 
 - Go through and modify each variables.tf file within /terraform/deployments to suit your needs. The db_pass from the database module should probably be moved into a secret store.
 - Build the 'environment' module locally, using your own account. Move the backend.tf file out of the directory and then run the following commands:
@@ -115,12 +118,13 @@ terraform apply
 - Now go through the kubernetes and database deployments and update the backend.tf files to suit your environment.
 - Create an SPN for the project, give it owner permissions to the resource group, and add it to Github secrets. You can be more granular if you like, but for the sake of this example i'm just giving it Owner. Contributer doesn't cut it.
     - Store the output of the below az cli command as the value of Github Actions secret variable, for example 'AZURE_CREDENTIALS'
-        - az ad sp create-for-rbac --name "myApp" --role owner \
+        ```bash
+        az ad sp create-for-rbac --name "myApp" --role owner \
             --scopes /subscriptions/{subscriptionid}]/resourceGroups/{resource-group} \
             --sdk-auth
-
-            The command should output a JSON object similar to this:
-
+        ```
+        - The command should output a JSON object similar to this:
+        ```json
             {
                 "clientId": "<GUID>",
                 "clientSecret": "<STRING>",
@@ -129,29 +133,30 @@ terraform apply
                 "resourceManagerEndpointUrl": "<URL>"
                 (...)
             }
+        ```    
 - Create the following Github Secrets from the json output:
-        - ARM_CLIENT_ID
-        - ARM_CLIENT_SECRET
-        - ARM_SUBSCRIPTION_ID
-        - ARM_TENANT_ID
+    - ARM_CLIENT_ID
+    - ARM_CLIENT_SECRET
+    - ARM_SUBSCRIPTION_ID
+    - ARM_TENANT_ID
 - Create the following Github Secrets using your .env.prod file as reference:
-        - DJANGO_SECRET_KEY
-        - DJANGO_SUPERUSER_EMAIL
-        - DJANGO_SUPERUSER_PASSWORD
-        - DJANGO_SUPERUSER_USERNAME
-        - POSTGRES_DB
-        - POSTGRES_HOST
-        - POSTGRES_PASSWORD
-        - POSTGRES_PORT
-        - POSTGRES_USER
+    - DJANGO_SECRET_KEY
+    - DJANGO_SUPERUSER_EMAIL
+    - DJANGO_SUPERUSER_PASSWORD
+    - DJANGO_SUPERUSER_USERNAME
+    - POSTGRES_DB
+    - POSTGRES_HOST
+    - POSTGRES_PASSWORD
+    - POSTGRES_PORT
+    - POSTGRES_USER
 
-### Kubernetes
+## Kubernetes
 
 - Open the build-k8s.yaml file and change the env variables to suit your environment.
 - Go into the .github/workflows/build-k8s.yaml file and update the env var's to suit your environment.
 - Go into the k8s/manifests/deployment.yaml file and update to suit your environment, or copy your own file over and replace it.
 
-### Deployment
+## Deployment
 
 - Push your changes to Github and the terraform.yaml workflow should kick off.
 - Once terraform has finished doing it's thing, you need to create two more Github Secrets. Go to your container registry in Azure > Settings > Access Keys:
